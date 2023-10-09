@@ -86,6 +86,24 @@ public class EmpleaDAO implements Dao<Emplea> {
 
     @Override
     public Emplea select(Object primaryKey) {
-        PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTFARMACE)
+        try {
+            PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTFARMACEUTIC);
+            ResultSet rs = stmnt.executeQuery();
+            return getEmplea(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Emplea selectFromFarmacia(String cif_farmacia) {
+        try {
+            PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTFARMACIA);
+            ResultSet rs = stmnt.executeQuery();
+            return getEmplea(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
