@@ -5,7 +5,8 @@ USE db_farmacia;
 CREATE TABLE `Adresses` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `carrer` varchar(100) NOT NULL,
-  `ciutat` integer NOT NULL
+  `ciutat` VARCHAR(100) NOT NULL,
+  CONSTRAINT UK_Adresses UNIQUE (carrer, ciutat)
 );
 
 CREATE TABLE `Farmacia` (

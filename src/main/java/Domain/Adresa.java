@@ -4,16 +4,14 @@
  */
 package Domain;
 
-import Model.AdresaDao;
-
 /**
  *
  * @author cripoponc    
  */
-public class Adresa implements Entity<Adresa> {
+public class Adresa {
     private int id;
     private String carrer;
-    private String provincia;
+    private String ciutat;
    
     /***
      * Constructor para trabajar con Adresa que ya existe
@@ -24,7 +22,7 @@ public class Adresa implements Entity<Adresa> {
     public Adresa(int id, String carrer, String provincia) {
         this.id = id;
         this.carrer = carrer;
-        this.provincia = provincia;
+        this.ciutat = provincia;
     }
     
     public Adresa(){};
@@ -35,7 +33,7 @@ public class Adresa implements Entity<Adresa> {
      */
     public Adresa(String carrer, String provincia) {
         this.carrer = carrer;
-        this.provincia = provincia;
+        this.ciutat = provincia;
     }
 
     public int getId() {
@@ -50,19 +48,12 @@ public class Adresa implements Entity<Adresa> {
         this.carrer = carrer;
     }
 
-    public String getProvincia() {
-        return provincia;
+    public String getCiutat() {
+        return ciutat;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
-
-    public boolean exists() {
-        Object object = new AdresaDao().select(this.id);
-
-        return object != null;
-
+    public void setCiutat(String ciutat) {
+        this.ciutat = ciutat;
     }
     
 }

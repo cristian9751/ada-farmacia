@@ -19,25 +19,24 @@ import java.util.List;
  * @author cripoponc
  */
 public class AdresaDao implements Dao<Adresa> {
-    private static final String SQL_INSERT = "INSERT INTO Adresses(carrer, provincia) VALUES(?, ?)";
-    private static final String SQL_UPDATE = "UPDATE Adresses SET provincia = ?, carrer = ? WHERE id = ? ";
+    private static final String SQL_INSERT = "INSERT INTO Adresses(carrer, ciutat) VALUES(?, ?)";
+    private static final String SQL_UPDATE = "UPDATE Adresses SET carrer = ?, ciutat = ? WHERE id = ? ";
     private static final String SQL_DELETE = "DELETE From Adresses WHERE id = ?";
     private static final String SQL_SELECT = "SELECT * FROM Adresses WHERE id = ?";
     private static final String SQL_SELECTALL = "SELECT * FROM Adresses";
-    private static final Connection conexion = getConnection();
 
 
 
-    public static Adresa getAdresa(ResultSet rs) {
-        Adresa adresa = null;
+    private static Adresa getAdresa(ResultSet rs) {
         try {
+
             String carrer = rs.getString("carrer");
-            String provincia = rs.getString("provincia");
-            adresa = new Adresa(carrer, provincia);
+            String ciutat = rs.getString("ciutat");
+            return new Adresa(carrer, ciutat);
         } catch(SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
+            return null;
         }
-        return adresa;
     }
 
     @Override
@@ -45,11 +44,10 @@ public class AdresaDao implements Dao<Adresa> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setString(1, adresa.getCarrer());
-            stmnt.setString(2, adresa.getProvincia());
-            stmnt.execute();
-            return true;
+            stmnt.setString(2, adresa.getCiutat());
+            return stmnt.execute();
         } catch(SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         } finally {
             closeConnection();
@@ -60,13 +58,13 @@ public class AdresaDao implements Dao<Adresa> {
     public boolean update(Adresa adresa) {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
+            stmnt.setString(1, adresa.getCarrer());
+            stmnt.setString(2, adresa.getCiutat());
             stmnt.setInt(3, adresa.getId());
-            stmnt.setString(2, adresa.getCarrer());
-            stmnt.setString(1, adresa.getProvincia());
             stmnt.execute();
             return true;
         } catch(SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             return false;
         } finally {
             closeConnection();
@@ -99,7 +97,7 @@ public class AdresaDao implements Dao<Adresa> {
                 list.add(getAdresa(rs));
             }
         } catch(SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         } finally {
             closeConnection();
         }
@@ -111,10 +109,12 @@ public class AdresaDao implements Dao<Adresa> {
     public Adresa select(Object primaryKey) {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
+            stmnt.setInt(1, (int) primaryKey);
             ResultSet rs = stmnt.executeQuery();
+            rs.next();
             return getAdresa(rs);
         } catch(SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             return null;
         } finally {
             closeConnection();
