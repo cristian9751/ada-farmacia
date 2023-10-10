@@ -71,7 +71,7 @@ CREATE TABLE `Especialitat` (
 );
 
 CREATE TABLE `Metge` (
-  `numColegiat` integer PRIMARY KEY,
+  `numColegiat` integer PRIMARY KEY AUTO_INCREMENT,
   `especialitat` integer,
   `nom` varchar(100) NOT NULL,
   `cognom1` varchar(100) NOT NULL,

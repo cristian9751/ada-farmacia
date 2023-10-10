@@ -8,11 +8,16 @@ public class Input {
     public static Object getObject(String showText, Function<Scanner, Object> getType, Function<InputMismatchException, Object> error) {
         Scanner in = new Scanner(System.in);
         Object response = null;
-        try {
-            response = getType.apply(in);
-        } catch(InputMismatchException e) {
-            error.apply(e);
-        }
+        Boolean isValid = true;
+        do {
+            System.out.println(showText);
+            try {
+                response = getType.apply(in);
+            } catch(InputMismatchException e) {
+                error.apply(e);
+                isValid = false;
+            }
+        }  while(!isValid);
 
         return response;
     }

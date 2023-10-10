@@ -21,7 +21,7 @@ public class FarmaciaDAO implements Dao<Farmacia> {
     private static final String SQL_DELETE = "DELETE FROM Farmacia WHERE cif = ?";
 
 
-    public Farmacia getFarmacia(ResultSet rs) {
+    private static  Farmacia getFarmacia(ResultSet rs) {
         try {
             String cif = rs.getString("cif");
             Boolean actiu = rs.getBoolean("actiu");

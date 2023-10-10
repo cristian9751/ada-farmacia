@@ -22,15 +22,13 @@ public class Metge {
 
     /**
      * Constructor para trabajar con un medico existente  en la base de datos
-     * @param numColegiat
      * @param especialitat
      * @param nom
      * @param cognom1
      * @param cognom2
      * @param actiu 
      */
-    public Metge(int numColegiat, Especialitat especialitat, String nom, String cognom1, String cognom2, boolean actiu) {
-        this.numColegiat = numColegiat;
+    public Metge(int numColegiat , Especialitat especialitat, String nom, String cognom1, String cognom2, boolean actiu) {
         this.especialitat = especialitat;
         this.nom = nom;
         this.cognom1 = cognom1;
