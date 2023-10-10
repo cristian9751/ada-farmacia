@@ -4,11 +4,13 @@
  */
 package Domain;
 
+import Model.AdresaDao;
+
 /**
  *
  * @author cripoponc    
  */
-public class Adresa {
+public class Adresa implements Entity<Adresa> {
     private int id;
     private String carrer;
     private String provincia;
@@ -55,6 +57,12 @@ public class Adresa {
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
-    
+
+    public boolean exists() {
+        Object object = new AdresaDao().select(this.id);
+
+        return object != null;
+
+    }
     
 }

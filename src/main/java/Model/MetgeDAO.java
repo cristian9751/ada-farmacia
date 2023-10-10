@@ -18,9 +18,10 @@ public class MetgeDAO implements Dao<Metge> {
             String cognom1 = rs.getString("cognom1");
             String cognom2 = rs.getString("cognom2");
             Boolean actiu = rs.getBoolean("actiu");
-            return new Metge(numColegiat, especialitat, nom, cognom1, cognom2, actiu)
+            return new Metge(numColegiat, especialitat, nom, cognom1, cognom2, actiu);
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
     @Override
