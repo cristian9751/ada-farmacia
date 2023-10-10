@@ -24,6 +24,7 @@ public class Especialitat {
         this.nom = nom;
     }
 
+
     public int getIdEspecialitat() {
         return idEspecialitat;
     }

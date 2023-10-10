@@ -100,7 +100,7 @@ public class MedicamentDAO implements Dao<Medicament> {
         } finally {
             closeConnection();
         }
-
+        return list;
     }
 
     @Override

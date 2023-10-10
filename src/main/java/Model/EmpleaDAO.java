@@ -44,8 +44,10 @@ public class EmpleaDAO implements Dao<Emplea> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setString(1, (String) primaryKey);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -61,6 +63,7 @@ public class EmpleaDAO implements Dao<Emplea> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return list;
     }
 
     @Override

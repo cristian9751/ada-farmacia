@@ -18,7 +18,7 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
     private static final String SQL_SELECTALL = "SELECT * FROM Farmaceutic ";
     private static final String SQL_SELECT = "SELECT * FROM Farmaceutic WHERE dni = ?";
 
-    public Farmaceutic getFarmacetic(ResultSet rs ) {
+    private static Farmaceutic getFarmacetic(ResultSet rs ) {
         try {
             String dni = rs.getString("dni");
             String nom = rs.getString("nom");
