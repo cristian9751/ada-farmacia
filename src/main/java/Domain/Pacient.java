@@ -18,6 +18,9 @@ public class Pacient {
     public Pacient() {
     }
 
+    /*
+    Constructor con todos los parametros para manejar pacientes ya existentes en la base de datos
+     */
     public Pacient(String dni, String nom, String cognom1, String cognom2, boolean actiu) {
         this.dni = dni;
         this.nom = nom;
@@ -25,7 +28,10 @@ public class Pacient {
         this.cognom2 = cognom2;
         this.actiu = actiu;
     }
-    
+
+    /*
+        Constructor sin parametro actiu para manejar las instancias de paciente que se utilizan para insertar a la bd
+     */
     public Pacient(String dni, String nom, String cognom1, String cognom2) {
         this(dni, nom, cognom1, cognom2, true);
     }
@@ -62,7 +68,7 @@ public class Pacient {
         this.cognom2 = cognom2;
     }
 
-    public boolean isActiu() {
+    public boolean getActiu() {
         return actiu;
     }
 

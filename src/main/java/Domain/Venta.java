@@ -4,6 +4,9 @@
  */
 package Domain;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 /**
  *
  * @author cripoponc
@@ -11,7 +14,7 @@ package Domain;
 public class Venta {
 
     private int idVenta;
-    private String dataVenta;
+    private Timestamp dataVenta;
     private double preu;
     private Farmacia farmacia;
     private Farmaceutic farmaceutic;
@@ -20,7 +23,9 @@ public class Venta {
     public Venta() {
     }
 
-    public Venta(String dataVenta, double preu, Farmacia farmacia, Farmaceutic farmaceutic, Medicament medicament) {
+    /*Constructor sin clave primaria para manejar los objetos que se van a utilizar para insertar informacion en
+    * la base de datos*/
+    public Venta(Timestamp dataVenta, double preu, Farmacia farmacia, Farmaceutic farmaceutic, Medicament medicament) {
         this.dataVenta = dataVenta;
         this.preu = preu;
         this.farmacia = farmacia;
@@ -28,7 +33,10 @@ public class Venta {
         this.medicament = medicament;
     }
 
-    public Venta(int idVenta, String dataVenta, double preu, Farmacia farmacia, Farmaceutic farmaceutic, Medicament medicament) {
+    /*
+    Constructor con clave primaria para menajer los objets que se van a instanciar utilizando la informacion obtenida de la base de datos
+     */
+    public Venta(int idVenta, Timestamp dataVenta, double preu, Farmacia farmacia, Farmaceutic farmaceutic, Medicament medicament) {
         this.idVenta = idVenta;
         this.dataVenta = dataVenta;
         this.preu = preu;
@@ -45,11 +53,11 @@ public class Venta {
         this.idVenta = idVenta;
     }
 
-    public String getDataVenta() {
+    public Timestamp getDataVenta() {
         return dataVenta;
     }
 
-    public void setDataVenta(String dataVenta) {
+    public void setDataVenta(Timestamp dataVenta) {
         this.dataVenta = dataVenta;
     }
 

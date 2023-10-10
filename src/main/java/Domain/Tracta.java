@@ -16,11 +16,13 @@ public class Tracta {
     public Tracta() {
     }
 
+    /*Constructor sin clave primeria para menejar los objetos que se van a utilizar para insertar en la base de datos*/
     public Tracta(Metge metge, Pacient pacient) {
         this.metge = metge;
         this.pacient = pacient;
     }
 
+    /*Constructor con clave primaria para manejar los objetos creados a partir de la informacion de la base de datos*/
     public Tracta(int idTracta, Metge metge, Pacient pacient) {
         this.idTracta = idTracta;
         this.metge = metge;
