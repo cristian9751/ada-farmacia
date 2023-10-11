@@ -12,12 +12,25 @@ public class Emplea {
     private Farmacia farmacia;
     private Farmaceutic farmaceutic;
 
+    private int EmpleaId;
+
     public Emplea() {
     }
 
+    /*
+    * Constructor sin clave primaria para crear las instancias que se utilizaran para insertar datos en
+    * la base de datos*/
     public Emplea(Farmacia farmacia, Farmaceutic farmaceutic) {
         this.farmacia = farmacia;
         this.farmaceutic = farmaceutic;
+    }
+
+    /*
+    Constructor con id para manejar los objetos instanciados a partir de los datos obtenidos de la base de datos
+     */
+    public Emplea(int EmpleaId, Farmacia farmacia, Farmaceutic farmaceutic) {
+        this(farmacia, farmaceutic);
+        this.EmpleaId = EmpleaId;
     }
 
     public Farmacia getFarmacia() {

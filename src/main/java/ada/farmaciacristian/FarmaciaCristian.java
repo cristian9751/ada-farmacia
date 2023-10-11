@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package ada.farmaciacristian;
 
 import com.sun.jdi.VoidType;
@@ -35,6 +30,7 @@ public class FarmaciaCristian {
             3. Modificar informacio
             4. Buscar per id
             5. Veure tots
+            6. Enrere
             """;
 
     protected void manageCrudMenu(
@@ -44,7 +40,7 @@ public class FarmaciaCristian {
             Function<Void, Void> select,
             Function<Void, Void> selectAll
     ) {
-        int selectedOption = getInteger(CRUD_MENU, "Debes introducir una de  las cinco opciones numericas");
+        int selectedOption = getInteger(CRUD_MENU, 1, 6);
         boolean isValid = true;
         do {
             switch (selectedOption) {

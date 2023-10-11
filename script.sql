@@ -25,9 +25,9 @@ CREATE TABLE `Farmaceutic` (
 );
 
 CREATE TABLE `Emplea` (
+  `idEmplea` INT PRIMARY KEY AUTO_INCREMENT,
   `farmacia` VARCHAR(100),
   `farmaceutic` varchar(100),
-  PRIMARY KEY (`farmacia`, `farmaceutic`),
   CONSTRAINT FK_Emplea_Farmacia FOREIGN KEY (farmacia) REFERENCES Farmacia(cif) ON UPDATE CASCADE ON DELETE NO ACTION,
   CONSTRAINT FK_Emplea_Farmaceutic FOREIGN KEY (farmaceutic) REFERENCES Farmaceutic(dni) ON UPDATE CASCADE ON DELETE NO ACTION
 );
