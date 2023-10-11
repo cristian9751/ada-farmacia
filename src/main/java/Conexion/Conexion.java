@@ -48,4 +48,12 @@ public class Conexion {
         }
     }
 
+    public static boolean queryDone(int registry ) {
+        boolean res = false;
+        if(registry > 0)
+            res = true;
+
+        return res;
+    }
+
 }

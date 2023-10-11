@@ -29,10 +29,10 @@ public class AdresaDao implements Dao<Adresa> {
 
     private static Adresa getAdresa(ResultSet rs) {
         try {
-
             String carrer = rs.getString("carrer");
             String ciutat = rs.getString("ciutat");
-            return new Adresa(carrer, ciutat);
+            int idAdresa = rs.getInt("id");
+            return new Adresa(idAdresa, carrer, ciutat);
         } catch(SQLException e) {
             e.printStackTrace(System.out);
             return null;
@@ -41,50 +41,51 @@ public class AdresaDao implements Dao<Adresa> {
 
     @Override
     public boolean insert(Adresa adresa) {
+        boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setString(1, adresa.getCarrer());
             stmnt.setString(2, adresa.getCiutat());
-            return stmnt.execute();
+            result = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
             System.out.println(e.getMessage());
-            return false;
         } finally {
             closeConnection();
         }
+        return result;
     }
 
     @Override
     public boolean update(Adresa adresa) {
+        boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
             stmnt.setString(1, adresa.getCarrer());
             stmnt.setString(2, adresa.getCiutat());
             stmnt.setInt(3, adresa.getId());
-            stmnt.execute();
-            return true;
+            result = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
             e.printStackTrace(System.out);
-            return false;
         } finally {
             closeConnection();
         }
+        return result;
 
     }
 
     @Override
     public boolean delete(Object primaryKey) {
+        boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setInt(1, (int) primaryKey);
-            stmnt.execute();
-            return true;
+            result = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         } finally {
             closeConnection();
         }
+        return result;
     }
 
     @Override

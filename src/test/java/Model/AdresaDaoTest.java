@@ -28,6 +28,7 @@ class AdresaDaoTest {
         String RESET_AI = "ALTER TABLE Adresses AUTO_INCREMENT=1";
         conexion.prepareStatement(DELETE).execute();
         conexion.prepareStatement(RESET_AI).execute();
+        closeConnection();
     }
 
 
@@ -46,8 +47,9 @@ class AdresaDaoTest {
     @Test
     void update() {
         insert();
-        adresaWithoutId.setCiutat("Burgos");
-        assertTrue(adresaDao.update(adresaWithoutId));
+        Adresa adresaWithId = adresaDAO.select(1);
+        adresaWithId.setCiutat("Burgos");
+        assertTrue(adresaDao.update(adresaWithId));
     }
 
     @Test
@@ -56,6 +58,7 @@ class AdresaDaoTest {
     }
     @Test
     void delete() {
+        insert();
         assertTrue(adresaDAO.delete(1));
     }
 
@@ -68,5 +71,21 @@ class AdresaDaoTest {
     void select() {
         insert();
         assertNotNull(adresaDao.select(1));
+    }
+
+    @Test
+    void selectNonExistant() {
+        assertNull(adresaDao.select(1));
+    }
+    @Test
+    void deleteNonExistant() {
+        assertFalse(adresaDAO.delete(1));
+    }
+
+    @Test
+    void updateWithoutChanges() {
+        insert();
+        adresaWithoutId.setCarrer("Carrer A");
+        assertFalse(adresaDao.update(adresaWithoutId));
     }
 }

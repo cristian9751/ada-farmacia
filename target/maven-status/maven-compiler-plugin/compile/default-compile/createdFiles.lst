@@ -1,3 +1,12 @@
-ada\farmaciacristian\Utils\Input.class
+Model\EmpleaDAO.class
+Model\TracataDAO.class
+Model\MedicamentDAO.class
+Model\PrescripcioDAO.class
 ada\farmaciacristian\Utils\Expressions.class
 ada\farmaciacristian\FarmaciaCristian.class
+Model\PacientDAO.class
+ada\farmaciacristian\Utils\Input.class
+Model\FarmaceuticDAO.class
+Model\MetgeDAO.class
+Model\VentaDAO.class
+Model\EspecialitatDAO.class
