@@ -23,7 +23,7 @@ class AdresaDaoTest {
 
 
     @BeforeEach
-    void setUp() throws SQLException {
+    void setUp() throws SQLException{
         String DELETE = " DELETE FROM Adresses";
         String RESET_AI = "ALTER TABLE Adresses AUTO_INCREMENT=1";
         conexion.prepareStatement(DELETE).execute();
@@ -33,19 +33,19 @@ class AdresaDaoTest {
 
 
     @Test
-    void insert() {
+    void insert() throws SQLException {
        assertTrue(adresaDao.insert(adresaWithoutId));
     }
 
     @Test
-    void insertExistent() {
+    void insertExistent() throws SQLException {
         insert();
         assertFalse(adresaDao.insert(adresaWithoutId));
     }
 
 
     @Test
-    void update() {
+    void update() throws SQLException {
         insert();
         Adresa adresaWithId = adresaDAO.select(1);
         adresaWithId.setCiutat("Burgos");
@@ -53,37 +53,37 @@ class AdresaDaoTest {
     }
 
     @Test
-    void updateNonExistant() {
+    void updateNonExistant() throws SQLException {
         assertFalse(adresaDao.update(adresaWithoutId));
     }
     @Test
-    void delete() {
+    void delete() throws SQLException {
         insert();
         assertTrue(adresaDAO.delete(1));
     }
 
     @Test
-    void selectAll() {
+    void selectAll() throws SQLException {
         assertNotNull(adresaDao.selectAll());
     }
 
     @Test
-    void select() {
+    void select() throws SQLException {
         insert();
         assertNotNull(adresaDao.select(1));
     }
 
     @Test
-    void selectNonExistant() {
+    void selectNonExistant()  throws SQLException {
         assertNull(adresaDao.select(1));
     }
     @Test
-    void deleteNonExistant() {
+    void deleteNonExistant() throws SQLException {
         assertFalse(adresaDAO.delete(1));
     }
 
     @Test
-    void updateWithoutChanges() {
+    void updateWithoutChanges() throws SQLException{
         insert();
         adresaWithoutId.setCarrer("Carrer A");
         assertFalse(adresaDao.update(adresaWithoutId));

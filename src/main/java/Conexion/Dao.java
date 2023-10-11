@@ -4,6 +4,7 @@
  */
 package Conexion;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
  * @author cripoponc
  */
 public interface Dao<T> {
-    public boolean insert(T objeto);
-    public boolean update(T objeto);
-    public boolean delete(Object primaryKey);
+    public boolean insert(T objeto) ;
+    public boolean update(T objeto) ;
+    public boolean delete(Object primaryKey) ;
     public List<T> selectAll();
     public T select(Object primaryKey);
 }

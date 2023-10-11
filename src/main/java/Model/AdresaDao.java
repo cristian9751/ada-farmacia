@@ -85,6 +85,7 @@ public class AdresaDao implements Dao<Adresa> {
         } finally {
             closeConnection();
         }
+
         return result;
     }
 
@@ -108,17 +109,18 @@ public class AdresaDao implements Dao<Adresa> {
 
     @Override
     public Adresa select(Object primaryKey) {
+        Adresa adresa = null;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setInt(1, (int) primaryKey);
             ResultSet rs = stmnt.executeQuery();
             rs.next();
-            return getAdresa(rs);
+            adresa = getAdresa(rs);
         } catch(SQLException e) {
             e.printStackTrace(System.out);
-            return null;
         } finally {
             closeConnection();
         }
+        return adresa;
     }
 }
