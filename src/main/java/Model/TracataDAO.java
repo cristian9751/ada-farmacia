@@ -1,9 +1,9 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Metge;
-import Domain.Pacient;
-import Domain.Tracta;
+import Domain.Entity.Metge;
+import Domain.Entity.Pacient;
+import Domain.Entity.Tracta;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,7 +1,7 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Emplea;
+import Domain.Entity.Emplea;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

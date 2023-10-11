@@ -12,9 +12,9 @@ import java.util.List;
  * @author cripoponc
  */
 public interface Dao<T> {
-    public boolean insert(T objeto) ;
-    public boolean update(T objeto) ;
-    public boolean delete(Object primaryKey) ;
-    public List<T> selectAll();
-    public T select(Object primaryKey);
+    public boolean insert(T objeto) throws SQLException, Exception;
+    public boolean update(T objeto) throws Exception;
+    public boolean delete(Object primaryKey) throws Exception;
+    public List<T> selectAll() throws Exception;
+    public T select(Object primaryKey) throws SQLException, Exception;
 }

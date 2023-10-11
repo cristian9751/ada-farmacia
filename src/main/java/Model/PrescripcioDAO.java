@@ -1,10 +1,10 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Medicament;
-import Domain.Metge;
-import Domain.Pacient;
-import Domain.Prescripcio;
+import Domain.Entity.Medicament;
+import Domain.Entity.Metge;
+import Domain.Entity.Pacient;
+import Domain.Entity.Prescripcio;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

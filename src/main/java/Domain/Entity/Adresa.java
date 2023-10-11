@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Domain;
+package Domain.Entity;
 
 /**
  *
@@ -29,11 +29,11 @@ public class Adresa {
     /***
      * Constructor para crear Adresa
      * @param carrer
-     * @param provincia 
+     * @param ciutat
      */
-    public Adresa(String carrer, String provincia) {
+    public Adresa(String carrer, String ciutat) {
         this.carrer = carrer;
-        this.ciutat = provincia;
+        this.ciutat = ciutat;
     }
 
     public int getId() {

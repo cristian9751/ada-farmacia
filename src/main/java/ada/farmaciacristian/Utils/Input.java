@@ -23,21 +23,26 @@ public class Input {
     }
 
 
-    public static String getString(String showText, String errorText) {
-        return (String) getObject(showText, (in) -> in.nextLine(), (e) -> errorText);
+    public static String getString(String showText) {
+        return (String) getObject(showText, (in) -> in.nextLine(), (e) -> "Debes introducir una cadena de caracteres alfanumerica");
     };
 
-    public static Integer getInteger(String showText, String errorText) {
-        return (Integer) getObject(showText, (in) -> in.nextInt(), (e) -> errorText);
+    public static Integer getInteger(String showText) {
+        return (Integer) getObject(showText, (in) -> in.nextInt(), (e) -> "Debes introducir un numero entero");
     };
 
-    public static Double getDouble(String showText, String errorText) {
-        return (Double) getObject(showText, (in) -> in.nextDouble(), (e) -> errorText);
+    public static Double getDouble(String showText) {
+        return (Double) getObject(showText, (in) -> in.nextDouble(), (e) -> "Invalido. Por favor, introduce un numero con decimales(Ejemplo: 3.14)");
     }
 
-    public static boolean checkRegex(Expressions expression, Object value) {
-        Pattern pattern = Pattern.compile(expression.getPattern());
-        return pattern.matcher(value.toString()).find();
+    public static boolean checkRegex(Expressions expression, Object value, String showText) {
+        boolean isValid = false;
+        while(!isValid) {
+            System.out.println(showText);
+            Pattern pattern = Pattern.compile(expression.getPattern());
+            isValid = pattern.matcher(value.toString()).find();
+        }
+        return isValid;
     };
 
 }

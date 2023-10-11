@@ -22,7 +22,7 @@ public class Conexion {
     private Conexion() {
         String JDBC_URL="jdbc:mysql://adadam.mariadb.database.azure.com:3306/db_farmacia?useSSL=true&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
         String JDBC_USER="ada@adadam";
-        String JDBC_PASSWORD = "846513279c@A";
+        String JDBC_PASSWORD = "t3MNUpz27eq5PBO";
         
         try {
             conexion = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);

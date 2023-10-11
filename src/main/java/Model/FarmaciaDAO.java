@@ -1,8 +1,8 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Adresa;
-import Domain.Farmacia;
+import Domain.Entity.Adresa;
+import Domain.Entity.Farmacia;
 
 import static Conexion.Conexion.*;
 
@@ -27,7 +27,7 @@ public class FarmaciaDAO implements Dao<Farmacia> {
             Boolean actiu = rs.getBoolean("actiu");
             Adresa adresa = new AdresaDao().select(rs.getInt("Adresa"));
             return new Farmacia(adresa, cif, actiu);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         } finally {

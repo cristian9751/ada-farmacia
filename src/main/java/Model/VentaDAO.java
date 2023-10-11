@@ -1,10 +1,10 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Farmaceutic;
-import Domain.Farmacia;
-import Domain.Medicament;
-import Domain.Venta;
+import Domain.Entity.Farmaceutic;
+import Domain.Entity.Farmacia;
+import Domain.Entity.Medicament;
+import Domain.Entity.Venta;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

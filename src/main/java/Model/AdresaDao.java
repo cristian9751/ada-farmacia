@@ -6,8 +6,8 @@ package Model;
 
 import static Conexion.Conexion.*;
 import Conexion.Dao;
-import Domain.Adresa;
-import java.sql.Connection;
+import Domain.Entity.Adresa;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,20 +27,19 @@ public class AdresaDao implements Dao<Adresa> {
 
 
 
-    private static Adresa getAdresa(ResultSet rs) {
+    private static Adresa getAdresa(ResultSet rs) throws Exception {
         try {
             String carrer = rs.getString("carrer");
             String ciutat = rs.getString("ciutat");
             int idAdresa = rs.getInt("id");
             return new Adresa(idAdresa, carrer, ciutat);
         } catch(SQLException e) {
-            e.printStackTrace(System.out);
-            return null;
+            throw new Exception("There has been an error fetching the data");
         }
     }
 
     @Override
-    public boolean insert(Adresa adresa) {
+    public boolean insert(Adresa adresa) throws Exception {
         boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
@@ -48,7 +47,7 @@ public class AdresaDao implements Dao<Adresa> {
             stmnt.setString(2, adresa.getCiutat());
             result = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
-            System.out.println(e.getMessage());
+            throw new Exception("User exists");
         } finally {
             closeConnection();
         }
@@ -56,7 +55,7 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public boolean update(Adresa adresa) {
+    public boolean update(Adresa adresa) throws Exception {
         boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
@@ -65,7 +64,8 @@ public class AdresaDao implements Dao<Adresa> {
             stmnt.setInt(3, adresa.getId());
             result = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
-            e.printStackTrace(System.out);
+            select(adresa.getId());
+            throw new Exception("Data unchanged");
         } finally {
             closeConnection();
         }
@@ -74,14 +74,14 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public boolean delete(Object primaryKey) {
+    public boolean delete(Object primaryKey) throws Exception {
         boolean result = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setInt(1, (int) primaryKey);
             result = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new Exception("User does not exist");
         } finally {
             closeConnection();
         }
@@ -90,7 +90,7 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public List<Adresa> selectAll() {
+    public List<Adresa> selectAll() throws Exception {
         List<Adresa> list = new ArrayList<>();
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
@@ -99,7 +99,7 @@ public class AdresaDao implements Dao<Adresa> {
                 list.add(getAdresa(rs));
             }
         } catch(SQLException e) {
-            e.printStackTrace(System.out);
+            throw new Error("There has been an error fetching the data");
         } finally {
             closeConnection();
         }
@@ -108,16 +108,16 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public Adresa select(Object primaryKey) {
-        Adresa adresa = null;
+    public Adresa select(Object primaryKey) throws Exception {
+        Adresa adresa;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setInt(1, (int) primaryKey);
             ResultSet rs = stmnt.executeQuery();
             rs.next();
             adresa = getAdresa(rs);
-        } catch(SQLException e) {
-            e.printStackTrace(System.out);
+        } catch(Exception e) {
+            throw new Exception("User does not exist");
         } finally {
             closeConnection();
         }

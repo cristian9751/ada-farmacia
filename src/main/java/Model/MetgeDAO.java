@@ -1,8 +1,8 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Especialitat;
-import Domain.Metge;
+import Domain.Entity.Especialitat;
+import Domain.Entity.Metge;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
