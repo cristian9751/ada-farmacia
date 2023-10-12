@@ -18,20 +18,6 @@ public class Farmaceutic {
     private Date anyLicenciatura;
     private Boolean actiu;
 
-    /**
-     * Get the value of actiu
-     *
-     * @return the value of actiu
-     */
-    public Boolean isActiu() {
-        return actiu;
-    }
-
-    /**
-     * Set the value of actiu
-     *
-     * @param actiu new value of actiu
-     */
     public void setActiu(Boolean actiu) {
         this.actiu = actiu;
     }
@@ -40,12 +26,12 @@ public class Farmaceutic {
     public Farmaceutic() {
     }
 
-    //Constructor para crear nuevo farmaceutico
+    //Constructor para instanciar objetos cuyos parametros se van a almacenar en la base de datos
     public Farmaceutic(String dni, String nom, String cognom1, String cognom2, Date anyLicenciatura) {
         this(dni, nom, cognom1, cognom2, anyLicenciatura, true);
         
     }
-    //Constructor con todos los parametros
+    //Constructor con todos los parametros para instanciar objetos cuya informacion se ha obtenido de la base de datos
     public Farmaceutic(String dni, String nom, String cognom1, String cognom2, Date anyLicenciatura, Boolean actiu) {
         this.dni = dni;
         this.nom = nom;

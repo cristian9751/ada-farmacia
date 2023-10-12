@@ -47,7 +47,13 @@ public class Emplea {
 
     public void setFarmaceutic(Farmaceutic farmaceutic) {
         this.farmaceutic = farmaceutic;
+    };
+
+    public int getEmpleaId() {
+        return EmpleaId;
     }
-    
-        
+
+    public void setEmpleaId(int empleaId) {
+        EmpleaId = empleaId;
+    }
 }

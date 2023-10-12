@@ -4,6 +4,7 @@
  */
 package Conexion;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,9 +13,10 @@ import java.util.List;
  * @author cripoponc
  */
 public interface Dao<T> {
-    public boolean insert(T objeto) throws SQLException, Exception;
-    public boolean update(T objeto) throws Exception;
-    public boolean delete(Object primaryKey) throws Exception;
-    public List<T> selectAll() throws Exception;
-    public T select(Object primaryKey) throws SQLException, Exception;
+     T getEntity(ResultSet rs) throws Exception;
+     boolean insert(T objeto) throws Exception;
+     boolean update(T objeto) throws Exception;
+    boolean delete(Object primaryKey) throws Exception;
+    List<T> selectAll() throws Exception;
+    T select(Object primaryKey) throws  Exception;
 }

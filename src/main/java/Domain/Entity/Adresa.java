@@ -13,23 +13,19 @@ public class Adresa {
     private String carrer;
     private String ciutat;
    
-    /***
-     * Constructor para trabajar con Adresa que ya existe
-     * @param id 
-     * @param carrer
-     * @param provincia 
+    /*
+    Constructor para instanciar objetss con la informacion obtenida de la base de datos
      */
     public Adresa(int id, String carrer, String provincia) {
         this.id = id;
         this.carrer = carrer;
         this.ciutat = provincia;
     }
-    
+
     public Adresa(){};
-    /***
-     * Constructor para crear Adresa
-     * @param carrer
-     * @param ciutat
+
+    /*
+    Constructor sin clave primaria para instanciar objetos cuy informacion se va a almacenar en la base de  datos
      */
     public Adresa(String carrer, String ciutat) {
         this.carrer = carrer;

@@ -16,31 +16,29 @@ public class Farmacia {
     public Farmacia() {
     }
 
+    /*
+    Constructor para instanciar objetos con la informacion de la base de datos
+     */
     public Farmacia(Adresa adresa, String cif, Boolean actiu) {
         this.adresa = adresa;
         this.cif = cif;
         this.actiu = actiu;
     }
 
+    /*
+    Constructor para instanciar objetos cuya informacion se va a almacenar en la base de datos
+     */
     public Farmacia(String cif, Adresa adresa) {
         this.adresa = adresa;
         this.actiu = true;
     }
 
-     /**
-     * Get the value of actiu
-     *
-     * @return the value of actiu
-     */
+
     public Boolean getAcitu() {
         return actiu;
     }
 
-    /**
-     * Set the value of actiu
-     *
-     * @param acitu new value of actiu
-     */
+
     public void setAcitu(Boolean acitu) {
         this.actiu = acitu;
     }

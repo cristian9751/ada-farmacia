@@ -1,10 +1,9 @@
 package Model;
 
 import Conexion.Dao;
+import static Conexion.Conexion.*;
 import Domain.Entity.Adresa;
 import Domain.Entity.Farmacia;
-
-import static Conexion.Conexion.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,90 +11,82 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FarmaciaDAO implements Dao<Farmacia> {
-    private static final String SQL_INSERT = "INSERT INTO Farmcia VALUES(?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE Farmacia SET Adresa = ?, Actiu= ? WHERE cif = ?";
-    private static final String SQL_SELECT = "SELECT * FROM Farmacia WHERE cif = ?";
-    private static final String SQL_SELECTALL = "SELECT * FROM Farmacia";
-    private static final String SQL_DELETE = "DELETE FROM Farmacia WHERE cif = ?";
+    private static String SQL_INSERT = "INSERT INTO farmacia(cif, Adresa, actiu) VALUES(?, ?, ?)";
+    private static String SQL_UPDATE = "UPDATE Farmcia SET Adresa = ?, actiu = ? WHERE cif = ?";
 
+    private static String SQL_DELETE = "DELETE FROM Farmacia WHERE cif = ?";
 
-    private static  Farmacia getFarmacia(ResultSet rs) {
+    private static String SELECT_ALL = "SELECT * FROM Farmacia";
+
+    private static String SQL_SELECT = SELECT_ALL + "WHERE cif = ?";
+
+    @Override
+    public Farmacia getEntity(ResultSet rs) throws Exception {
         try {
             String cif = rs.getString("cif");
-            Boolean actiu = rs.getBoolean("actiu");
             Adresa adresa = new AdresaDao().select(rs.getInt("Adresa"));
+            Boolean actiu = rs.getBoolean("actiu");
             return new Farmacia(adresa, cif, actiu);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            closeConnection();
+        } catch (SQLException e) {
+            throw new Exception("There has been an error fetching the data");
         }
-
+        
     }
 
     @Override
-    public boolean insert(Farmacia farmacia) {
-
+    public boolean insert(Farmacia farmacia) throws Exception {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setString(1, farmacia.getCif());
             stmnt.setInt(2, farmacia.getAdresa().getId());
             stmnt.setBoolean(3, farmacia.getAcitu());
-            stmnt.execute();
-            return true;
+            return queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new Exception("Farmacia exists");
         } finally {
             closeConnection();
         }
     }
 
     @Override
-    public boolean update(Farmacia farmacia) {
+    public boolean update(Farmacia farmacia) throws Exception {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
             stmnt.setInt(1, farmacia.getAdresa().getId());
             stmnt.setBoolean(2, farmacia.getAcitu());
             stmnt.setString(3, farmacia.getCif());
-            stmnt.execute();
-            return true;
+            return queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            select(farmacia.getCif());
+            throw new Error("Data unchanged");
         } finally {
             closeConnection();
         }
-
     }
 
     @Override
-    public boolean delete(Object primaryKey) {
-        try {
-            PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
-            stmnt.setString(1, (String) primaryKey);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean delete(Object primaryKey) throws Exception {
+       try {
+           PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
+           stmnt.setString(1, (String) primaryKey);
+           return queryDone(stmnt.executeUpdate());
+       } catch (SQLException e) {
+           throw new Exception("Farmacia does not exist");
+       }
     }
 
-
     @Override
-    public List<Farmacia> selectAll() {
+    public List<Farmacia> selectAll() throws Exception {
         List<Farmacia> list = new ArrayList<>();
         try {
-            PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
+            PreparedStatement stmnt = getConnection().prepareStatement(SELECT_ALL);
             ResultSet rs = stmnt.executeQuery();
-            while (rs.next()) {
-                list.add(getFarmacia(rs));
+            while(rs.next()) {
+                list.add(getEntity(rs));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new Exception("There has been an error fetching the data");
         } finally {
             closeConnection();
         }
@@ -103,16 +94,19 @@ public class FarmaciaDAO implements Dao<Farmacia> {
     }
 
     @Override
-    public Farmacia select(Object primaryKey) {
+    public Farmacia select(Object primaryKey) throws Exception {
+        Farmacia farmacia;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
+            stmnt.setString(1, (String) primaryKey);
             ResultSet rs = stmnt.executeQuery();
-            return getFarmacia(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            rs.next();
+            farmacia = getEntity(rs);
+        } catch (Exception e) {
+            throw new Exception("Farmacia does not exist");
         } finally {
             closeConnection();
         }
+            return farmacia;
     }
 }
