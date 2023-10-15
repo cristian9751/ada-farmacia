@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
-import static Conexion.Conexion.*;
 import Conexion.Dao;
-import Domain.Entity.Adresa;
+import Domain.Entity.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,40 +9,41 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author cripoponc
- */
-public class AdresaDao implements Dao<Adresa> {
-    private static final String SQL_INSERT = "INSERT INTO Adresses(carrer, ciutat) VALUES(?, ?)";
-    private static final String SQL_UPDATE = "UPDATE Adresses SET carrer = ?, ciutat = ? WHERE id = ? ";
-    private static final String SQL_DELETE = "DELETE From Adresses WHERE id = ?";
-    private static final String SQL_SELECTALL = "SELECT * FROM Adresses";
-    private static final String SQL_SELECT = SQL_SELECTALL + " WHERE id = ?";
+import static Conexion.Conexion.*;
+
+public class PrescripcioDAO implements Dao<Prescripcio> {
+    private static String SQL_INSERT = "INSERT INTO prescripcio(medicament, metge, pacient) VALUES (?. ?, ?)";
+    private static String SQL_UPDATE = "UPDATE prescripcio SET medicament = ?, metge = ?, pacient = ? WHERE idPrescripcio = ?";
+    private static String SQL_DELETE = "DELETE FROM prescripcio WHERE idPrescripcio = ?";
+
+    private static String SQL_SELECTALL = "SELECT * FROM prescripcio";
+
+    private static String SQL_SELECT = SQL_SELECTALL + " WHERE idPrescripcio = ?";
 
 
     @Override
-    public Adresa getEntity(ResultSet rs) {
-        Adresa adresa = null;
+    public Prescripcio getEntity(ResultSet rs) {
+        Prescripcio prescripcio = null;
         try {
-            String carrer = rs.getString("carrer");
-            String ciutat = rs.getString("ciutat");
-            int idAdresa = rs.getInt("id");
-            adresa = new Adresa(idAdresa, carrer, ciutat);
-        } catch(SQLException e) {
+            int idPrescripcio = rs.getInt("idPrescripcio");
+            Medicament medicament = new MedicamentDAO().select(rs.getString("medicament"));
+            Metge metge = new MetgeDAO().select(rs.getInt("metge"));
+            Pacient pacient = new PacientDAO().select(rs.getString("pacient"));
+            prescripcio = new Prescripcio(medicament, pacient, metge, null);
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         }
-        return adresa;
+        return prescripcio;
     }
 
-
     @Override
-    public boolean insert(Adresa adresa) {
+    public boolean insert(Prescripcio prescripcio) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
-            stmnt.setString(1, adresa.getCarrer());
-            stmnt.setString(2, adresa.getCiutat());
+            stmnt.setString(1, prescripcio.getMedicament().getNomComercial());
+            stmnt.setInt(2, prescripcio.getMetge().getNumColegiat());
+            stmnt.setString(3, prescripcio.getPacient().getDni());
             res = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
             e.printStackTrace(System.err);
@@ -58,13 +54,14 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public boolean update(Adresa adresa) {
+    public boolean update(Prescripcio prescripcio) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
-            stmnt.setString(1, adresa.getCarrer());
-            stmnt.setString(2, adresa.getCiutat());
-            stmnt.setInt(3, adresa.getId());
+            stmnt.setInt(1, prescripcio.getMetge().getNumColegiat());
+            stmnt.setString(2, prescripcio.getMedicament().getNomComercial());
+            stmnt.setString(3, prescripcio.getPacient().getDni());
+            stmnt.setInt(4, prescripcio.getIdPrescripcio());
             res = queryDone(stmnt.executeUpdate());
         } catch(SQLException e) {
             e.printStackTrace(System.err);
@@ -75,7 +72,7 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public boolean delete(Object primaryKey){
+    public boolean delete(Object primaryKey) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
@@ -90,8 +87,8 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public List<Adresa> selectAll()  {
-        List<Adresa> list = new ArrayList<>();
+    public List<Prescripcio> selectAll() {
+        List<Prescripcio> list = new ArrayList<>();
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
             ResultSet rs = stmnt.executeQuery();
@@ -108,19 +105,19 @@ public class AdresaDao implements Dao<Adresa> {
     }
 
     @Override
-    public Adresa select(Object primaryKey) {
-        Adresa adresa = null;
+    public Prescripcio select(Object primaryKey) {
+        Prescripcio prescripcio = null;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setInt(1, (int) primaryKey);
             ResultSet rs = stmnt.executeQuery();
             rs.next();
-            adresa = getEntity(rs);
+            prescripcio = getEntity(rs);
         } catch(Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-        return adresa;
+        return prescripcio;
     }
 }

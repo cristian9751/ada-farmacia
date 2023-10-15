@@ -22,62 +22,69 @@ public class FarmaciaDAO implements Dao<Farmacia> {
     private static String SQL_SELECT = SELECT_ALL + "WHERE cif = ?";
 
     @Override
-    public Farmacia getEntity(ResultSet rs) throws Exception {
+    public Farmacia getEntity(ResultSet rs)  {
+        Farmacia farmacia = null;
         try {
             String cif = rs.getString("cif");
             Adresa adresa = new AdresaDao().select(rs.getInt("Adresa"));
             Boolean actiu = rs.getBoolean("actiu");
-            return new Farmacia(adresa, cif, actiu);
+            farmacia = new Farmacia(adresa, cif, actiu);
         } catch (SQLException e) {
-            throw new Exception("There has been an error fetching the data");
+            e.printStackTrace(System.err);
         }
-        
+        return farmacia;
     }
 
     @Override
-    public boolean insert(Farmacia farmacia) throws Exception {
+    public boolean insert(Farmacia farmacia)  {
+        boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setString(1, farmacia.getCif());
             stmnt.setInt(2, farmacia.getAdresa().getId());
             stmnt.setBoolean(3, farmacia.getAcitu());
-            return queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            throw new Exception("Farmacia exists");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+        return res;
     }
 
     @Override
-    public boolean update(Farmacia farmacia) throws Exception {
+    public boolean update(Farmacia farmacia)  {
+        Boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
             stmnt.setInt(1, farmacia.getAdresa().getId());
             stmnt.setBoolean(2, farmacia.getAcitu());
             stmnt.setString(3, farmacia.getCif());
-            return queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             select(farmacia.getCif());
-            throw new Error("Data unchanged");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+        return res;
     }
 
     @Override
-    public boolean delete(Object primaryKey) throws Exception {
+    public boolean delete(Object primaryKey)  {
+        Boolean res = false;
        try {
            PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
            stmnt.setString(1, (String) primaryKey);
-           return queryDone(stmnt.executeUpdate());
+           res = queryDone(stmnt.executeUpdate());
        } catch (SQLException e) {
-           throw new Exception("Farmacia does not exist");
+           e.printStackTrace(System.err);
        }
+       return res;
     }
 
     @Override
-    public List<Farmacia> selectAll() throws Exception {
+    public List<Farmacia> selectAll()  {
         List<Farmacia> list = new ArrayList<>();
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SELECT_ALL);
@@ -86,7 +93,7 @@ public class FarmaciaDAO implements Dao<Farmacia> {
                 list.add(getEntity(rs));
             }
         } catch (Exception e) {
-            throw new Exception("There has been an error fetching the data");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
@@ -94,8 +101,8 @@ public class FarmaciaDAO implements Dao<Farmacia> {
     }
 
     @Override
-    public Farmacia select(Object primaryKey) throws Exception {
-        Farmacia farmacia;
+    public Farmacia select(Object primaryKey)  {
+        Farmacia farmacia = null;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setString(1, (String) primaryKey);
@@ -103,10 +110,10 @@ public class FarmaciaDAO implements Dao<Farmacia> {
             rs.next();
             farmacia = getEntity(rs);
         } catch (Exception e) {
-            throw new Exception("Farmacia does not exist");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-            return farmacia;
+        return farmacia;
     }
 }

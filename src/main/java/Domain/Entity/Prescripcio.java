@@ -4,7 +4,9 @@
  */
 package Domain.Entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,7 +17,7 @@ public class Prescripcio {
     private int idPrescripcio;
     private Medicament medicament;
     private Pacient pacient;
-    private Date data;
+    private Timestamp data;
 
     private Metge metge;
     
@@ -23,7 +25,7 @@ public class Prescripcio {
     }
 
     /*Constructor sin clave primaria para manejar los objetos que se van a utilizar para insertar*/
-    public Prescripcio(Medicament medicament, Pacient pacient, Metge metge,  Date data) {
+    public Prescripcio(Medicament medicament, Pacient pacient, Metge metge,  Timestamp data) {
         this.medicament = medicament;
         this.pacient = pacient;
         this.data = data;
@@ -31,7 +33,7 @@ public class Prescripcio {
     }
 
     /*Constructor con clave primaria para manejar los objetos  que se obtienen a partir de la informacion en la base de datos*/
-    public Prescripcio(int idPrescripcio, Medicament medicament, Pacient pacient, Metge metge, Date data) {
+    public Prescripcio(int idPrescripcio, Medicament medicament, Pacient pacient, Metge metge, Timestamp data) {
         this.idPrescripcio = idPrescripcio;
         this.medicament = medicament;
         this.pacient = pacient;
@@ -63,11 +65,11 @@ public class Prescripcio {
         this.pacient = pacient;
     }
 
-    public Date getData() {
+    public Timestamp getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(Timestamp data) {
         this.data = data;
     }
 

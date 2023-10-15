@@ -1,9 +1,8 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Entity.Emplea;
-import Domain.Entity.Farmaceutic;
-import Domain.Entity.Farmacia;
+import Domain.Entity.*;
+import Domain.Entity.Tracta;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,74 +12,70 @@ import java.util.List;
 
 import static Conexion.Conexion.*;
 
-public class EmpleaDAO implements Dao<Emplea> {
-    private static final String SQL_INSERT = "INSERT INTO emplea (farmacia, farmaceutic) VALUES(?, ?)";
-    private static final String SQL_UPDATE = "UPDATE emplea SET farmacia = ?, farmaceutic = ? WHERE idEmplea = ?";
+public class TractaDAO implements Dao<Tracta> {
+    private static final String SQL_INSERT = "INSERT INTO Tracta (metge, pacient) VALUES (?, ?)";
+    private static final String SQL_UPDATE = "UPDATE Tracta SET metge = ?, SET pacient = ? WHERE idTracta = ?";
+    private static final String SQL_DELETE = "DELETE FROM Tracta WHERE idTracta = ?";
 
-    private static final String SQL_DELETE = "DELETE FROM emplea WHERE idEmplea = ?";
-    private static final String SQL_SELECTALL = "SELECT * FROM emplea";
-    private static final String SQL_SELECT = SQL_SELECTALL + " WHERE idEmplea = ?";
+    private static final String SQL_SELECTALL = "SELECT * FROMA Tracta";
+
+    private static final String SQL_SELECT = SQL_SELECTALL + " WHERE idTracta = ?";
+
 
     @Override
-    public Emplea getEntity(ResultSet rs) {
-        Emplea emplea = null;
+    public Tracta getEntity(ResultSet rs) {
+        Tracta tracta = null;
         try {
-            int idEmplea = rs.getInt("idEmplea");
-            Farmacia farmacia = new FarmaciaDAO().select(rs.getString("farmacia"));
-            Farmaceutic farmaceutic = new FarmaceuticDAO().select(rs.getString("farmaceutic"));
-            return new Emplea(idEmplea, farmacia, farmaceutic);
+            int idTracta = rs.getInt("idTracta");
+            Metge metge = new MetgeDAO().select(rs.getInt("metge"));
+            Pacient pacient = new PacientDAO().select(rs.getString("pacient"));
+            tracta = new Tracta(idTracta ,metge, pacient);
         } catch (SQLException e) {
             e.printStackTrace(System.err);
-        } finally {
-            closeConnection();
         }
-
-        return emplea;
+        return tracta;
     }
 
     @Override
-    public boolean insert(Emplea emplea)  {
+    public boolean insert(Tracta tracta) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
-            stmnt.setString(1, emplea.getFarmacia().getCif());
-            stmnt.setString(2, emplea.getFarmaceutic().getDni());
+            stmnt.setInt(1, tracta.getMetge().getNumColegiat());
+            stmnt.setString(2, tracta.getPacient().getDni());
             res = queryDone(stmnt.executeUpdate());
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-
         return res;
     }
 
     @Override
-    public boolean update(Emplea emplea) {
+    public boolean update(Tracta tracta) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
-            stmnt.setString(1, emplea.getFarmacia().getCif());
-            stmnt.setString(2, emplea.getFarmaceutic().getDni());
-            stmnt.setInt(3, emplea.getEmpleaId());
-            return queryDone(stmnt.executeUpdate());
-        } catch (SQLException e) {
+            stmnt.setInt(1, tracta.getMetge().getNumColegiat());
+            stmnt.setString(2, tracta.getPacient().getDni());
+            stmnt.setInt(3, tracta.getIdTracta());
+            res = queryDone(stmnt.executeUpdate());
+        } catch(SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-
-        return false;
-
+        return res;
     }
 
     @Override
-    public boolean delete(Object primaryKey){
+    public boolean delete(Object primaryKey) {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setInt(1, (int) primaryKey);
-            return queryDone(stmnt.executeUpdate());
+            res= queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
@@ -90,36 +85,37 @@ public class EmpleaDAO implements Dao<Emplea> {
     }
 
     @Override
-    public List<Emplea> selectAll() {
-        List<Emplea> list = new ArrayList<>();
+    public List<Tracta> selectAll() {
+        List<Tracta> list = new ArrayList<>();
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
             ResultSet rs = stmnt.executeQuery();
             while(rs.next()) {
                 list.add(getEntity(rs));
             }
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+
         return list;
     }
 
     @Override
-    public Emplea select(Object primaryKey)  {
-        Emplea emplea = null;
+    public Tracta select(Object primaryKey) {
+        Tracta tracta = null;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setInt(1, (int) primaryKey);
             ResultSet rs = stmnt.executeQuery();
             rs.next();
-            emplea = getEntity(rs);
-        } catch (SQLException e) {
+            tracta = getEntity(rs);
+        } catch(Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-        return emplea;
+        return tracta;
     }
 }

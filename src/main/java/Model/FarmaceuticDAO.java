@@ -24,7 +24,8 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
     private static final String SQL_SELECT = SQL_SELECTALL +  " WHERE dni = ?";
 
     @Override
-    public Farmaceutic getEntity(ResultSet rs) throws Exception {
+    public Farmaceutic getEntity(ResultSet rs)  {
+        Farmaceutic farmaceutic = null;
         try {
             String dni = rs.getString("dni");
             String nom = rs.getString("nom");
@@ -32,14 +33,16 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
             String cognom2 = rs.getString("cognom2");
             Date anyLicenciatura = rs.getDate("anyLicenciatura");
             Boolean actiu = rs.getBoolean("actiu");
-            return new Farmaceutic(dni, nom, cognom1, cognom2, anyLicenciatura, actiu);
+            farmaceutic =  new Farmaceutic(dni, nom, cognom1, cognom2, anyLicenciatura, actiu);
         } catch (SQLException e) {
-            throw new Exception("There has been an error fetching the data");
+            e.printStackTrace(System.err);
         }
+        return farmaceutic;
     }
 
     @Override
-    public boolean insert(Farmaceutic farmaceutic) throws Exception {
+    public boolean insert(Farmaceutic farmaceutic) {
+        boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setString(1, farmaceutic.getDni());
@@ -48,17 +51,19 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
             stmnt.setString(4, farmaceutic.getCognom2());
             stmnt.setDate(5, farmaceutic.getAnyLicenciatura());
             stmnt.setBoolean(6, farmaceutic.getActiu());
-            return queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
 
         } catch (SQLException e) {
-            throw new Exception("Farmaceutic exists");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+        return res;
     }
 
     @Override
-    public boolean update(Farmaceutic farmaceutic) throws Exception {
+    public boolean update(Farmaceutic farmaceutic)  {
+        boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
             stmnt.setString(1, farmaceutic.getNom());
@@ -67,30 +72,33 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
             stmnt.setDate(4, farmaceutic.getAnyLicenciatura());
             stmnt.setBoolean(5, farmaceutic.getActiu());
             stmnt.setString(6, farmaceutic.getDni());
-            return queryDone(stmnt.executeUpdate());
+            res =  queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             select(farmaceutic.getDni());
-            throw new Exception("Data unchanged");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+        return res;
     }
 
     @Override
-    public boolean delete(Object primaryKey) throws Exception {
+    public boolean delete(Object primaryKey)  {
+        boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setString(1, (String) primaryKey);
-            return queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            throw new Exception("Farmaceutic does not exist");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
+        return res;
     }
 
     @Override
-    public List<Farmaceutic> selectAll() throws Exception {
+    public List<Farmaceutic> selectAll()  {
         List<Farmaceutic> list = new ArrayList<>();
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
@@ -99,7 +107,7 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
                 list.add(getEntity(rs));
             }
         } catch (Exception e) {
-            throw new Exception("There has been an error fetching the data");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
@@ -107,8 +115,8 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
     }
 
     @Override
-    public Farmaceutic select(Object primaryKey) throws Exception {
-        Farmaceutic farmaceutic;
+    public Farmaceutic select(Object primaryKey)  {
+        Farmaceutic farmaceutic = null;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
             stmnt.setString(1, (String) primaryKey);
@@ -116,7 +124,7 @@ public class FarmaceuticDAO implements Dao<Farmaceutic> {
             rs.next();
             farmaceutic = getEntity(rs);
         } catch (Exception e) {
-            throw new Exception("Farmaceutic does not exist");
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
