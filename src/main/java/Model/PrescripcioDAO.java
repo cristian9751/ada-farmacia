@@ -6,30 +6,32 @@ import Domain.Entity.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import static Conexion.Conexion.*;
 
 public class PrescripcioDAO implements Dao<Prescripcio> {
-    private static String SQL_INSERT = "INSERT INTO prescripcio(medicament, metge, pacient) VALUES (?. ?, ?)";
-    private static String SQL_UPDATE = "UPDATE prescripcio SET medicament = ?, metge = ?, pacient = ? WHERE idPrescripcio = ?";
-    private static String SQL_DELETE = "DELETE FROM prescripcio WHERE idPrescripcio = ?";
+    private static final String SQL_INSERT = "INSERT INTO prescripcio (medicament, metge, pacient) VALUES (?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE prescripcio SET medicament = ?, metge = ?, pacient = ? WHERE idPrescripcio = ?";
+    private static final String SQL_DELETE = "DELETE FROM prescripcio WHERE idPrescripcio = ?";
 
-    private static String SQL_SELECTALL = "SELECT * FROM prescripcio";
+    private static final String SQL_SELECTALL = "SELECT * FROM prescripcio";
 
-    private static String SQL_SELECT = SQL_SELECTALL + " WHERE idPrescripcio = ?";
-
+    private static final String SQL_SELECT = SQL_SELECTALL + " WHERE idPrescripcio = ?";
 
     @Override
     public Prescripcio getEntity(ResultSet rs) {
         Prescripcio prescripcio = null;
+         //public Prescripcio(int idPrescripcio, Medicament medicament, Pacient pacient, Metge metge, Timestamp data)
         try {
             int idPrescripcio = rs.getInt("idPrescripcio");
             Medicament medicament = new MedicamentDAO().select(rs.getString("medicament"));
             Metge metge = new MetgeDAO().select(rs.getInt("metge"));
             Pacient pacient = new PacientDAO().select(rs.getString("pacient"));
-            prescripcio = new Prescripcio(medicament, pacient, metge, null);
+            Timestamp data = rs.getTimestamp("dataPrescripcio");
+            prescripcio = new Prescripcio(idPrescripcio, medicament, pacient, metge, data);
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         }
@@ -45,7 +47,7 @@ public class PrescripcioDAO implements Dao<Prescripcio> {
             stmnt.setInt(2, prescripcio.getMetge().getNumColegiat());
             stmnt.setString(3, prescripcio.getPacient().getDni());
             res = queryDone(stmnt.executeUpdate());
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -58,12 +60,12 @@ public class PrescripcioDAO implements Dao<Prescripcio> {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
-            stmnt.setInt(1, prescripcio.getMetge().getNumColegiat());
-            stmnt.setString(2, prescripcio.getMedicament().getNomComercial());
+            stmnt.setString(1, prescripcio.getMedicament().getNomComercial());
+            stmnt.setInt(2, prescripcio.getMetge().getNumColegiat());
             stmnt.setString(3, prescripcio.getPacient().getDni());
             stmnt.setInt(4, prescripcio.getIdPrescripcio());
             res = queryDone(stmnt.executeUpdate());
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -77,7 +79,7 @@ public class PrescripcioDAO implements Dao<Prescripcio> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setInt(1, (int) primaryKey);
-            res= queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
@@ -92,10 +94,10 @@ public class PrescripcioDAO implements Dao<Prescripcio> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
             ResultSet rs = stmnt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 list.add(getEntity(rs));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -113,7 +115,7 @@ public class PrescripcioDAO implements Dao<Prescripcio> {
             ResultSet rs = stmnt.executeQuery();
             rs.next();
             prescripcio = getEntity(rs);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();

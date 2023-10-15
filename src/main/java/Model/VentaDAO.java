@@ -108,6 +108,18 @@ public class VentaDAO implements Dao<Venta> {
 
     @Override
     public Venta select(Object primaryKey) {
-        return null;
+        Venta venta = null;
+        try {
+            PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECT);
+            stmnt.setInt(1, (int) primaryKey);
+            ResultSet rs = stmnt.executeQuery();
+            rs.next();
+            venta = getEntity(rs);
+        } catch(Exception e) {
+            e.printStackTrace(System.err);
+        } finally {
+            closeConnection();
+        }
+        return venta;
     }
 }

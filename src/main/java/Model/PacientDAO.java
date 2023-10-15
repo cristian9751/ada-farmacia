@@ -1,8 +1,6 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Entity.Adresa;
-import Domain.Entity.Pacient;
 import Domain.Entity.Pacient;
 
 import java.sql.PreparedStatement;
@@ -14,13 +12,11 @@ import java.util.List;
 import static Conexion.Conexion.*;
 
 public class PacientDAO implements Dao<Pacient> {
-    private static final String SQL_INSERT = "INSERT INTO Pacient VALUES(dni, nom, cognom1, cognom2, actiu) VALUES(?" +
-            ", ?, ?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO Pacient (dni, nom, cognom1, cognom2, actiu) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE Pacient SET nom = ?, cognom1 = ?, cognom2 = ?, actiu = ? WHERE dni = ?";
     private static final String SQL_DELETE = "DELETE FROM Pacient WHERE dni = ?";
     private static final String SQL_SELECTALL = "SELECT * FROM Pacient";
-
-    private static final String SQL_SELECT = SQL_SELECTALL + "WHERE dni = ?";
+    private static final String SQL_SELECT = SQL_SELECTALL + " WHERE dni = ?";
 
     @Override
     public Pacient getEntity(ResultSet rs) {
@@ -50,7 +46,7 @@ public class PacientDAO implements Dao<Pacient> {
             stmnt.setString(4, pacient.getCognom2());
             stmnt.setBoolean(5, pacient.getActiu());
             res = queryDone(stmnt.executeUpdate());
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -69,7 +65,7 @@ public class PacientDAO implements Dao<Pacient> {
             stmnt.setBoolean(4, pacient.getActiu());
             stmnt.setString(5, pacient.getDni());
             res = queryDone(stmnt.executeUpdate());
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -83,7 +79,7 @@ public class PacientDAO implements Dao<Pacient> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
             stmnt.setString(1, (String) primaryKey);
-            res= queryDone(stmnt.executeUpdate());
+            res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         } finally {
@@ -98,15 +94,14 @@ public class PacientDAO implements Dao<Pacient> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
             ResultSet rs = stmnt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 list.add(getEntity(rs));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
-
         return list;
     }
 
@@ -119,7 +114,7 @@ public class PacientDAO implements Dao<Pacient> {
             ResultSet rs = stmnt.executeQuery();
             rs.next();
             pacient = getEntity(rs);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();

@@ -25,6 +25,7 @@ public class MedicamentDAO implements Dao<Medicament> {
             String nomComercial = rs.getString("nomComercial");
             String formula = rs.getString("formula");
             boolean actiu = rs.getBoolean("actiu");
+            medicament = new Medicament(nomComercial, formula, actiu);
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {

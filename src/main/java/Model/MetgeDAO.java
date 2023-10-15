@@ -1,7 +1,6 @@
 package Model;
 
 import Conexion.Dao;
-import Domain.Entity.Adresa;
 import Domain.Entity.Especialitat;
 import Domain.Entity.Metge;
 
@@ -13,9 +12,9 @@ import java.util.List;
 import static Conexion.Conexion.*;
 
 public class MetgeDAO implements Dao<Metge> {
-    String SQL_INSERT = "INSERT INTO metge VALUES (especialitat, nom, cognom1, cognom2, actiu) VALUES (?, ?, ?, ?, ?)";
-    String SQL_UPDATE = "UPDATE metge SET esecialitat = ?, nom = ?, cognom1 = ?, cognom2 = ?, actiu = ? WHERE numColegiat = ?";
-    String SQL_DELETE = "DELETE FROM  metge WHERE numColegiat = ?";
+    String SQL_INSERT = "INSERT INTO metge (especialitat, nom, cognom1, cognom2, actiu) VALUES (?, ?, ?, ?, ?)";
+    String SQL_UPDATE = "UPDATE metge SET especialitat = ?, nom = ?, cognom1 = ?, cognom2 = ?, actiu = ? WHERE numColegiat = ?";
+    String SQL_DELETE = "DELETE FROM metge WHERE numColegiat = ?";
     String SQL_SELECTALL = "SELECT * FROM metge";
     String SQL_SELECT = SQL_SELECTALL + " WHERE numColegiat = ?";
 
@@ -28,7 +27,7 @@ public class MetgeDAO implements Dao<Metge> {
             String nom = rs.getString("nom");
             String cognom1 = rs.getString("cognom1");
             String cognom2 = rs.getString("cognom2");
-            Boolean actiu = rs.getBoolean("actiu");
+            boolean actiu = rs.getBoolean("actiu");
             metge = new Metge(numColegiat, especialitat, nom, cognom1, cognom2, actiu);
         } catch (SQLException e) {
             e.printStackTrace(System.err);
@@ -40,7 +39,7 @@ public class MetgeDAO implements Dao<Metge> {
     public boolean insert(Metge metge) {
         boolean res = false;
         try {
-            PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
+            PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
             stmnt.setInt(1, metge.getEspecialitat().getIdEspecialitat());
             stmnt.setString(2, metge.getNom());
             stmnt.setString(3, metge.getCognom1());
@@ -48,7 +47,7 @@ public class MetgeDAO implements Dao<Metge> {
             stmnt.setBoolean(5, metge.isActiu());
             res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-                e.printStackTrace(System.err);
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
@@ -60,7 +59,7 @@ public class MetgeDAO implements Dao<Metge> {
     public boolean update(Metge metge) {
         boolean res = false;
         try {
-            PreparedStatement stmnt = getConnection().prepareStatement(SQL_INSERT);
+            PreparedStatement stmnt = getConnection().prepareStatement(SQL_UPDATE);
             stmnt.setInt(1, metge.getEspecialitat().getIdEspecialitat());
             stmnt.setString(2, metge.getNom());
             stmnt.setString(3, metge.getCognom1());
@@ -75,8 +74,6 @@ public class MetgeDAO implements Dao<Metge> {
         }
 
         return res;
-
-
     }
 
     @Override
@@ -84,10 +81,10 @@ public class MetgeDAO implements Dao<Metge> {
         boolean res = false;
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_DELETE);
-            stmnt.setInt(1,(int) primaryKey);
+            stmnt.setInt(1, (int) primaryKey);
             res = queryDone(stmnt.executeUpdate());
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         } finally {
             closeConnection();
         }
@@ -100,10 +97,10 @@ public class MetgeDAO implements Dao<Metge> {
         try {
             PreparedStatement stmnt = getConnection().prepareStatement(SQL_SELECTALL);
             ResultSet rs = stmnt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 list.add(getEntity(rs));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();
@@ -121,7 +118,7 @@ public class MetgeDAO implements Dao<Metge> {
             ResultSet rs = stmnt.executeQuery();
             rs.next();
             metge = getEntity(rs);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
             closeConnection();

@@ -14,7 +14,7 @@ public class EspecialitatDAO implements Dao<Especialitat> {
     private static final String SQL_INSERT = "INSERT INTO Especialitat(nom) VALUES(?)";
     private static final String SQL_UPDATE = "UPDATE Especialitat SET nom = ? WHERE idEspecialitat = ?";
 
-    private static final String SQL_DELETE = "DELETE * FROM Especialitat WHERE idEspecialitat = ?";
+    private static final String SQL_DELETE = "DELETE FROM Especialitat WHERE idEspecialitat = ?";
 
     private static final String SQL_SELECTALL = "SELECT * FROM Especialitat";
 

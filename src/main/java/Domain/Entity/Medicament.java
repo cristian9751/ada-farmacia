@@ -16,12 +16,21 @@ public class Medicament {
     public Medicament() {
     }
 
+    /**
+     * Constructor con todos los parametros que obtiene los datos de la base de datos
+     * @param nomComercial
+     * @param formula
+     * @param actiu
+     */
     public Medicament(String nomComercial, String formula, boolean actiu) {
         this.nomComercial = nomComercial;
         this.formula = formula;
         this.actiu = actiu;
     }
 
+    /*
+    Constructor que se utiliza para posteriormente agregarse a la base de datos
+     */
     public Medicament(String nomComercial, String formula) {
         this(nomComercial, formula, true);
     }

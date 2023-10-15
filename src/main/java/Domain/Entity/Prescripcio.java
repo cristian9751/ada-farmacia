@@ -25,10 +25,9 @@ public class Prescripcio {
     }
 
     /*Constructor sin clave primaria para manejar los objetos que se van a utilizar para insertar*/
-    public Prescripcio(Medicament medicament, Pacient pacient, Metge metge,  Timestamp data) {
+    public Prescripcio(Medicament medicament, Pacient pacient, Metge metge) {
         this.medicament = medicament;
         this.pacient = pacient;
-        this.data = data;
         this.metge = metge;
     }
 
@@ -37,7 +36,6 @@ public class Prescripcio {
         this.idPrescripcio = idPrescripcio;
         this.medicament = medicament;
         this.pacient = pacient;
-        this.data = data;
         this.metge = metge;
     }
 
